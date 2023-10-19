@@ -24,6 +24,7 @@ class Config(BaseConfig):
     seed: int = 37
     timestamp: datetime = datetime.utcnow()
     total_steps: int = 1000
+    log_interval: int = 100
     environment: EnvironmentConfig = Field(default_factory=EnvironmentConfig)
 
 
