@@ -1,5 +1,7 @@
 # minimind
 
+<img align="right" width="250" height="250" style="border-radius: 50%;" src="assests/minimind.png">
+
 Reinforcement Learning and Brain Research in JAX 🧠
 
 ## Environment setup
