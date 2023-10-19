@@ -1,5 +1,4 @@
 import os
-from importlib import util as import_util
 
 from setuptools import find_packages, setup
 
