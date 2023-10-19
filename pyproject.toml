@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "minimind"
+version = "0.0.0"
+description = "Reinforcement Learning and Brain Research in JAX 🧠"
+authors = ["Amr Kayid <amrmkayid@gmail.com>"]
+license = "MIT License"
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "3.10.11"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
