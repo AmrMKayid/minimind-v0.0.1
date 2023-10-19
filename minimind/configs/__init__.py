@@ -16,7 +16,7 @@ class BaseConfig(BaseModel):
 class EnvironmentConfig(BaseConfig):
     """Environment configuration class."""
 
-    environment_name: str = "LunarLander-v2"
+    environment_name: str = "InvertedPendulum-v4"
     render_mode: str = "human"
 
 

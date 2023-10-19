@@ -19,8 +19,10 @@ einops = "^0.7.0"
 rich = "^13.6.0"
 notebook = "^7.0.6"
 flax = {extras = ["all"], version = "^0.7.4"}
-gymnasium = {extras = ["all"], version = "^0.29.1"}
 pydantic = "^2.4.2"
+mujoco = "^3.0.0"
+imageio = "^2.31.5"
+gymnasium = "^0.29.1"
 
 
 [tool.poetry.group.dev.dependencies]
