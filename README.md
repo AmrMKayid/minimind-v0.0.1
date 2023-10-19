@@ -1,6 +1,6 @@
 # minimind
 
-<img align="right" width="250" height="250" style="border-radius: 50%;" src="assests/minimind.png">
+<img align="right" height="50%" style="border-radius: 50%;" src="assets/minimind.png">
 
 Reinforcement Learning and Brain Research in JAX 🧠
 
