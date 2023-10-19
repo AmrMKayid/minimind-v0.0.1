@@ -13,3 +13,9 @@ poetry env use $(which python)
 
 poetry install
 ```
+
+## Entry point
+
+```shell
+poetry run minimind
+```
