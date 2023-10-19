@@ -8,8 +8,43 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "3.10.11"
+jax = "^0.4.18"
+jaxlib = "^0.4.18"
+optax = "^0.1.7"
+ray = "^2.7.1"
+tqdm = "^4.66.1"
+pandas = "^2.1.1"
+wandb = "^0.15.12"
+einops = "^0.7.0"
+rich = "^13.6.0"
+notebook = "^7.0.6"
+flax = {extras = ["all"], version = "^0.7.4"}
+gymnasium = {extras = ["all"], version = "^0.29.1"}
 
+
+[tool.poetry.group.dev.dependencies]
+pre-commit = "^3.5.0"
+black = "^23.10.0"
+autoflake = "^2.2.1"
+isort = "^5.12.0"
+ipdb = "^0.13.13"
 
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.black]
+line-length = 120
+
+[tool.isort]
+profile = "black"
+line_length = 120
+
+[tool.autoflake]
+in-place = true
+recursive = true
+remove-all-unused-imports = true
+ignore-init-module-imports = true
+
+[tool.poetry.scripts]
+minimind = 'minimind.cortex:main'
