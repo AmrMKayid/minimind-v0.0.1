@@ -19,5 +19,5 @@ poetry install
 ## Entry point
 
 ```shell
-poetry run minimind
+poetry run minimind --config-path configs/default.yaml
 ```
