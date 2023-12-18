@@ -31,6 +31,7 @@ class EnvironmentConfig(BaseConfig):
 class CortexConfig(BaseConfig):
     """Cortex configuration class."""
 
+    PRNGKey: int = 0
     seed: int = 37
     timestamp: datetime = datetime.utcnow()
     total_steps: int = 1000

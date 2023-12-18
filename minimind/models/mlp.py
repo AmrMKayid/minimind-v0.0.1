@@ -7,11 +7,13 @@ from flax import linen as nn
 class MLP(nn.Module):
     features: Sequence[int]
 
-    @nn.compact
-    def __call__(self, inputs: jax.Array) -> jax.Array:
-        x = inputs
+    def setup(self):
+        layers = []
         for i, feature in enumerate(self.features):
-            x = nn.Dense(feature, name=f"mlp_layers_{i}")(x)
+            layers.append(nn.Dense(feature, name=f"mlp_layers_{i}"))
             if i != len(self.features) - 1:
-                x = nn.relu(x)
-        return x
+                layers.append(nn.relu)
+        self.layers = nn.Sequential(layers)
+
+    def __call__(self, inputs: jax.Array) -> jax.Array:
+        return self.layers(inputs)
