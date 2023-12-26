@@ -1,0 +1,22 @@
+version: '3.9'
+
+services:
+  minimind:
+    image: minimind:dev
+    command: nvidia-smi
+    stdin_open: true
+    tty: true
+    ipc: host
+    network_mode: host
+    build:
+      context: .
+      ssh:
+        - default
+      dockerfile: Dockerfile
+    volumes:
+      - ./:/minimind
+      - ~/.ssh:/root/.ssh
+      - ~/.netrc:/root/.netrc
+      - ~/.config/gcloud:/root/.config/gcloud
+      - ~/miniminddockerinputrc:/root/.inputrc
+      - ~/miniminddockerhistory:/root/.bash_history

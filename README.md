@@ -21,3 +21,15 @@ poetry install
 ```shell
 poetry run minimind --config-path configs/default.yaml
 ```
+
+
+## Docker
+
+```shell
+
+# For tracking history
+touch ~/miniminddockerinputrc
+touch ~/miniminddockerhistory
+
+docker compose run minimind bash
+```
