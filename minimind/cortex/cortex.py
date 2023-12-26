@@ -11,7 +11,7 @@ from minimind.utils import setup_logger
 logger = setup_logger()
 
 from minimind.config import Config
-from minimind.models import MLP, get_model
+from minimind.models import get_model
 
 
 class Cortex:
@@ -21,30 +21,37 @@ class Cortex:
     def run(self) -> None:
         logger.info(f"{self.config=}")
 
+        # jax rng
         rng = jax.random.key(self.config.cortex.PRNGKey)
+        self.config.cortex.rng = rng
+
         model = get_model(self.config)
         batch = jnp.ones((32, 10))
+
+        rng, split = jax.random.split(rng)
+        init_rngs = {"params": rng, "dropout": split}
 
         # Model summary
         tabulate_fn = nn.tabulate(
             model,
-            rng,
+            init_rngs,
             compute_flops=True,
             compute_vjp_flops=True,
         )
         print(tabulate_fn(batch))
 
         # Model init and apply
-        variables = model.init(rng, batch)
-        output = model.apply(variables, batch)
+        variables = model.init(init_rngs, batch)
+        output = model.apply(
+            variables,
+            batch,
+            rngs={"dropout": jax.random.split(rng)[0]},
+        )
         logger.info(f"{model=}")
         inspect(model)
         logger.info(f"{output=}")
 
-        env = gym.make(
-            id=self.config.environment.environment_name,
-            render_mode=self.config.environment.render_mode,
-        )
+        env = gym.make(**dict(self.config.environment))
         inspect(env)
         logger.info(f"{env=}")
 

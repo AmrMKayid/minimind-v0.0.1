@@ -5,9 +5,12 @@ cortex:
   log_interval: 100
 
 environment:
-  environment_name: "LunarLander-v2"
+  id: "FrozenLake-v1"
   render_mode: "human"
+  map_name: "8x8"
+  is_slippery: true
 
 architecture:
   architecture_name: "mlp"
   layers: [32, 16, 8, 4, 2]
+  dropout_rate: 0.25

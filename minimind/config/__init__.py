@@ -1,3 +1,4 @@
+from dataclasses import asdict
 from datetime import datetime
 from typing import List
 
@@ -10,7 +11,7 @@ class BaseConfig(BaseModel):
     """Base configuration class for all configurations."""
 
     class Config:
-        extra: str = "forbid"
+        extra: str = "allow"  # TODO: maybe change this later
         validate_default: bool = True
         validate_assignment: bool = True
 
@@ -25,7 +26,7 @@ class BaseConfig(BaseModel):
 class EnvironmentConfig(BaseConfig):
     """Environment configuration class."""
 
-    environment_name: str = "ALE/Breakout-v5"
+    id: str = "ALE/Breakout-v5"
     render_mode: str = "human"
 
 
