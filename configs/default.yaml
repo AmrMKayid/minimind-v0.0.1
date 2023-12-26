@@ -5,5 +5,9 @@ cortex:
   log_interval: 100
 
 environment:
-  environment_name: "ALE/Breakout-v5"
+  environment_name: "LunarLander-v2"
   render_mode: "human"
+
+architecture:
+  architecture_name: "mlp"
+  layers: [32, 16, 8, 4, 2]

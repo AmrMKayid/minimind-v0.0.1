@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import List
 
 import yaml
 from pydantic import BaseModel, Field
@@ -28,6 +29,13 @@ class EnvironmentConfig(BaseConfig):
     render_mode: str = "human"
 
 
+class ArchitectureConfig(BaseConfig):
+    """Architecture configuration class."""
+
+    architecture_name: str = "mlp"
+    layers: List[int] = [32, 16, 8, 4, 2]
+
+
 class CortexConfig(BaseConfig):
     """Cortex configuration class."""
 
@@ -41,6 +49,7 @@ class CortexConfig(BaseConfig):
 class Config(BaseConfig):
     cortex: CortexConfig = Field(default_factory=CortexConfig)
     environment: EnvironmentConfig = Field(default_factory=EnvironmentConfig)
+    architecture: ArchitectureConfig = Field(default_factory=ArchitectureConfig)
 
 
 if __name__ == "__main__":
