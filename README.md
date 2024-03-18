@@ -2,7 +2,7 @@
 
 <img align="right" src="assets/minimind.png">
 
-Reinforcement Learning and Brain Research in JAX 🧠
+ML Research 🪼 ❤️ 🌊
 
 ## Environment setup
 
@@ -22,14 +22,8 @@ poetry install
 poetry run minimind --config-path configs/default.yaml
 ```
 
-
 ## Docker
 
 ```shell
-
-# For tracking history
-touch ~/miniminddockerinputrc
-touch ~/miniminddockerhistory
-
 docker compose run minimind bash
 ```

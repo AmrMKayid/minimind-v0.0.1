@@ -1,51 +1,51 @@
 [tool.poetry]
 name = "minimind"
 version = "0.0.0"
-description = "Reinforcement Learning and Brain Research in JAX 🧠"
+description = "ML Research 🪼 ❤️ 🌊"
 authors = ["Amr Kayid <amrmkayid@gmail.com>"]
 license = "MIT License"
 readme = "README.md"
 
 
-[[tool.poetry.source]]
-name = "jax"
-url = "https://storage.googleapis.com/jax-releases/jax_releases.html"
-priority = "primary"
-
-
 [tool.poetry.dependencies]
 python = "3.10.11"
-jax = "0.4.20"
-jaxlib = "0.4.20"
-optax = "^0.1.7"
-ray = "^2.7.1"
-tqdm = "^4.66.1"
-pandas = "^2.1.1"
-wandb = "^0.15.12"
-einops = "^0.7.0"
-rich = "^13.6.0"
-notebook = "^7.0.6"
-flax = {extras = ["all"], version = "^0.7.4"}
-pydantic = "^2.4.2"
-mujoco = "^3.0.0"
-imageio = "^2.31.5"
-gymnasium = {extras = ["box2d", "atari", "accept-rom-license"], version = "^0.29.1"}
-ipykernel = "^6.27.1"
-tensorflow = "^2.15.0"
-pyyaml = "^6.0.1"
+jax = "0.4.25"
+jaxlib = "0.4.25"
+optax = "0.2.1"
+ray = {version = "2.9.3", extras = ["default"]}
+tqdm = "4.66.1"
+pandas = "2.1.1"
+wandb = "0.15.12"
+einops = "0.7.0"
+rich = "13.6.0"
+notebook = "7.0.6"
+flax = {version = "0.8.2", extras = ["all"]}
+pydantic = "2.5.0"
+ipykernel = "6.27.1"
+tensorflow = {version = "2.16.1" }
+tensorstore = "0.1.56"
+tensorflow-io-gcs-filesystem = "0.34.0"
+pyyaml = "6.0.1"
+datasets = "2.16.0"
+gcsfs = "2023.10.0"
+transformers = "4.36.2"
+jaxtyping = "0.2.25"
+jmp = "0.0.4"
 
 
 [tool.poetry.group.dev.dependencies]
-pre-commit = "^3.5.0"
-black = "^23.10.0"
-autoflake = "^2.2.1"
-isort = "^5.12.0"
-ipdb = "^0.13.13"
+pre-commit = "3.5.0"
+black = "23.10.0"
+autoflake = "2.2.1"
+isort = "5.12.0"
+ipdb = "0.13.13"
+docformatter = "1.7.5"
+pylint = "3.1.0"
 
 
 [build-system]
-requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+requires = ["poetry-core>=1.0.0"]
 
 [tool.black]
 line-length = 120
@@ -59,6 +59,7 @@ in-place = true
 recursive = true
 remove-all-unused-imports = true
 ignore-init-module-imports = true
+expand-star-imports = true
 
 [tool.poetry.scripts]
 minimind = 'minimind.minimind:main'

@@ -12,9 +12,9 @@ with open(os.path.join(here, "README.md"), encoding="utf-8") as f:
 version = "0.0.0"
 
 setup(
-    name="minimind 🧠",
+    name="minimind 🧠 🪼 ❤️ 🌊",
     version=version,
-    description="Reinforcement Learning and Brain Research in JAX 🧠",
+    description="ML Research in JAX 🧠 🪼 ❤️ 🌊",
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/AmrMKayid/minimind",

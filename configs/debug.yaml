@@ -7,8 +7,8 @@ minimind:
 
 
 mesh:
-  n_data_parallel: 1
-  n_fsdp_parallel: 8
+  n_data_parallel: 4
+  n_fsdp_parallel: 2
   n_sequence_parallel: 2
   n_tensors_parallel: 1
 
@@ -17,26 +17,24 @@ data:
   name: "en"
   split: "train"
   streaming: True
+  sequence_length: 1024
   batch_size: 8
   always_start_with_bos: False
-  tokenizer: "google/byt5-base"
-  # tokenizer: "hf-internal-testing/llama-tokenizer"
 
 arch:
   architecture_name: "transformer"
   embedding_dim: 8
-  vocab_size: 1024
+  vocab_size: 32768
   n_heads: 2
   n_layers: 2
   n_kv_heads: 2
   ffn_dim: 32
-  max_sequence_length: 1024
-  max_pos_emb_length: 1024
-  positional_embedding_type: "sinusoidal"
+  max_sequence_length: 32
   norm_type: "layer_norm"
   use_qk_norm: False
   residual_dropout_rate: 0.0
   initializer_range: 0.02
+  max_pos_emb_length: 512
   use_bias: False
 
 optim:

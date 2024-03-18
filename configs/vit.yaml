@@ -19,11 +19,11 @@ data:
   streaming: True
   batch_size: 8
   always_start_with_bos: False
-  tokenizer: "google/byt5-base"
-  # tokenizer: "hf-internal-testing/llama-tokenizer"
+  # tokenizer: "google/byt5-base"
+  tokenizer: "hf-internal-testing/llama-tokenizer"
 
 arch:
-  architecture_name: "transformer"
+  architecture_name: "vit"
   embedding_dim: 8
   vocab_size: 1024
   n_heads: 2
@@ -38,6 +38,9 @@ arch:
   residual_dropout_rate: 0.0
   initializer_range: 0.02
   use_bias: False
+
+  patch_size: [16, 16]
+  n_outputs: 5
 
 optim:
   optimizer: "adamw"

@@ -21,4 +21,4 @@ def get_model(config: Config):
     return _MODELS[model_name](config)
 
 
-from minimind.models.mlp import MLP
+from minimind.modeling.modules.mlp import MLP
