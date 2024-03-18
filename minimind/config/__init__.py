@@ -89,7 +89,7 @@ class MeshConfig(BaseConfig):
 
 
 class minimindConfig(BaseConfig):
-    """minimind configuration class."""
+    """Minimind configuration class."""
 
     PRNGKey: int = 0
     seed: int = 37

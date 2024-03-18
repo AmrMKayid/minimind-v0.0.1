@@ -9,7 +9,8 @@ from minimind.config import Config
 
 
 class SinusoidalPositionalEncoding(nn.Module):
-    """Implements the positional encoding layer for adding positional information to embeddings in a transformer model."""
+    """Implements the positional encoding layer for adding positional
+    information to embeddings in a transformer model."""
 
     config: Config
 
@@ -29,9 +30,10 @@ class SinusoidalPositionalEncoding(nn.Module):
         return x
 
 
-
 class RotaryPositionalEncoding(nn.Module):
-    """Implements rotary positional encoding (RoPE) for transformers, enhancing their ability to capture sequence order."""
+    """Implements rotary positional encoding (RoPE) for transformers, enhancing
+    their ability to capture sequence order."""
+
     config: Config
 
     def setup(self):
@@ -42,7 +44,7 @@ class RotaryPositionalEncoding(nn.Module):
         self._cos_cached = None
         self._sin_cached = None
 
-    def _update_cos_sin_tables(self, x: jax.Array, seq_dimension: int=1):
+    def _update_cos_sin_tables(self, x: jax.Array, seq_dimension: int = 1):
         seq_len = x.shape[seq_dimension]
 
         if seq_len != self._seq_len_cached:
@@ -73,8 +75,7 @@ class RotaryPositionalEncoding(nn.Module):
 
 
 class Embedding(nn.Module):
-    """
-    A module that represents an embedding layer.
+    """A module that represents an embedding layer.
 
     Args:
         config (Config): The configuration object.
@@ -90,7 +91,6 @@ class Embedding(nn.Module):
     Methods:
         setup(): Sets up the embedding layer.
         __call__(batch: Dict, training: bool, attend: bool = False) -> Dict[str, jax.Array]: Computes the forward pass of the embedding layer.
-
     """
 
     config: Config
@@ -140,8 +140,7 @@ class Embedding(nn.Module):
         training: bool,
         attend: bool = False,
     ) -> Dict[str, jax.Array]:
-        """
-        Computes the forward pass of the embedding layer.
+        """Computes the forward pass of the embedding layer.
 
         Args:
             batch (Dict): The input batch.
@@ -150,7 +149,6 @@ class Embedding(nn.Module):
 
         Returns:
             Dict[str, jax.Array]: The output batch.
-
         """
         if attend:
             inputs = batch.pop("x")  # [batch, seq, emb_dim]
@@ -181,8 +179,7 @@ class Embedding(nn.Module):
 
 
 class PatchEmbedding(nn.Module):
-    """
-    Implements patch embedding for vision transformers.
+    """Implements patch embedding for vision transformers.
 
     This module extracts patches from input images, flattens them, and projects them to a specified embedding dimension. Optionally, learned position embeddings can be added to the patch embeddings.
 
@@ -235,8 +232,7 @@ class PatchEmbedding(nn.Module):
 
 
 class SpeechEmbedding(nn.Module):
-    """
-    Implements a speech embedding layer for processing audio signals.
+    """Implements a speech embedding layer for processing audio signals.
 
     This layer applies two convolutional operations followed by GELU activations to the input audio signals. The first convolution maintains the sequence length, while the second halves it. Additionally, it adds sinusoidal embeddings to capture positional information within the audio sequence.
 
@@ -263,4 +259,3 @@ class SpeechEmbedding(nn.Module):
         encodings = jnp.sin(positions / jnp.power(max_position, angles))[None, :, :]
         encodings = jnp.repeat(encodings, batch_size, axis=0)
         return x + encodings
-

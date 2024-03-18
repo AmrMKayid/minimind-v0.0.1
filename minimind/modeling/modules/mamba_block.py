@@ -4,10 +4,12 @@ from einops import einsum
 
 
 class MambaBlock(nn.Module):
-    """MambaBlock is a custom neural network block that incorporates normalization,
-    convolution, and dense layers to process input sequences. This block is designed
-    for sequence modeling tasks and includes specialized components like selective
-    scan for dynamic computation."""
+    """MambaBlock is a custom neural network block that incorporates
+    normalization, convolution, and dense layers to process input sequences.
+
+    This block is designed for sequence modeling tasks and includes
+    specialized components like selective scan for dynamic computation.
+    """
 
     d_inner: int
     d_conv: int
@@ -61,7 +63,6 @@ class MambaBlock(nn.Module):
     def selective_scan(
         self, u: jnp.ndarray, delta: jnp.ndarray, A: jnp.ndarray, B: jnp.ndarray, C: jnp.ndarray, D: jnp.ndarray
     ) -> jnp.ndarray:
-
         b, l, d_in = u.shape
         n = A.shape[1]
 

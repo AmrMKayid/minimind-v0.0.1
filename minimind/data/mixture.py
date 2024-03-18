@@ -10,8 +10,11 @@ T = TypeVar("T")
 
 
 class MixtureDataset(ShardableDataset[T]):
-    """MixtureDataset supports loading data from multiple datasets. It takes a
-    list of datasets and yields from them according to the weights."""
+    """MixtureDataset supports loading data from multiple datasets.
+
+    It takes a list of datasets and yields from them according to the
+    weights.
+    """
 
     def __init__(
         self,

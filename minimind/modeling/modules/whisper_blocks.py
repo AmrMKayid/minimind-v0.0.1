@@ -11,7 +11,8 @@ from minimind.modeling.modules.transformer_block import TransformerBlock
 
 
 class WhisperSpeechEncoderBlock(TransformerBlock):
-    """Implements a single encoder block for the Whisper Speech model, combining self-attention with a feed-forward network."""
+    """Implements a single encoder block for the Whisper Speech model,
+    combining self-attention with a feed-forward network."""
 
 
 class WhisperSpeechEncoder(nn.Module):
@@ -32,7 +33,6 @@ class WhisperSpeechEncoder(nn.Module):
         batch: Dict[str, jax.Array],
         training: bool = False,
     ) -> Dict[str, jax.Array]:
-
         batch = self.embedding(batch, training)
         for idx in range(self.config.arch.n_layers):
             batch = self.encoder_blocks[idx](batch, training)
@@ -40,10 +40,14 @@ class WhisperSpeechEncoder(nn.Module):
 
 
 class WhisperTextDecoderBlock(nn.Module):
-    """
-    Implements a single decoder block for the Transformer model, combining self-attention, encoder-decoder attention, and a feed-forward network.
+    """Implements a single decoder block for the Transformer model, combining
+    self-attention, encoder-decoder attention, and a feed-forward network.
 
-    This block first processes the input through self-attention, allowing each position to attend to all positions up to and including itself. Then, it applies encoder-decoder attention, integrating information from the encoder's output. Finally, a position-wise feed-forward network is applied.
+    This block first processes the input through self-attention,
+    allowing each position to attend to all positions up to and
+    including itself. Then, it applies encoder-decoder attention,
+    integrating information from the encoder's output. Finally, a
+    position-wise feed-forward network is applied.
     """
 
     config: Config
@@ -59,7 +63,6 @@ class WhisperTextDecoderBlock(nn.Module):
         self.add_norm3 = AddNorm(self.self.config.arch.residual_dropout_rate)
 
     def causal_mask(self, batch_size: int, destination_dim: int, source_dim: int) -> jnp.ndarray:
-
         # Create index tensors for the source and destination dimensions
         idx_source = jnp.arange(destination_dim)[:, None]
         idx_destination = jnp.arange(source_dim)
@@ -71,7 +74,6 @@ class WhisperTextDecoderBlock(nn.Module):
         return jnp.broadcast_to(mask, (batch_size, self.num_heads, destination_dim, source_dim))
 
     def __call__(self, x: jnp.ndarray, context: jnp.ndarray, training: bool = False) -> tuple:
-
         mask = self.causal_mask(x.shape[0], x.shape[1], context.shape[1])
 
         attended_x, attention = self.attention(x, x)
@@ -87,10 +89,12 @@ class WhisperTextDecoderBlock(nn.Module):
 
 
 class WhisperTextDecoder(nn.Module):
-    """
-    Implements the decoder component of the Transformer model.
+    """Implements the decoder component of the Transformer model.
 
-    The Transformer decoder generates output sequences by processing input through multiple layers of TransformerDecoderBlocks. It incorporates context from the encoder at each layer to generate predictions.
+    The Transformer decoder generates output sequences by processing
+    input through multiple layers of TransformerDecoderBlocks. It
+    incorporates context from the encoder at each layer to generate
+    predictions.
     """
 
     config: Config
@@ -106,7 +110,6 @@ class WhisperTextDecoder(nn.Module):
         self.output_layer = nn.Dense(self.config.arch.vocab_size, name="output_layer")
 
     def __call__(self, x: jnp.ndarray, context: jnp.ndarray, training: bool = False) -> tuple:
-
         attention_maps = []
         x = self.embedding(x, training)
         cross_attention_maps = []

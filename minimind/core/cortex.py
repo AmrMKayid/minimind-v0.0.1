@@ -19,6 +19,26 @@ from minimind.utils.constants import JAX_DEFAULT_BACKEND
 
 
 class Cortex:
+    """The Cortex class represents the core component of the neural network
+    model. It is responsible for initializing the model, training the model,
+    and storing the model state.
+
+    Args:
+        config (Config): The configuration object containing the model settings.
+
+    Attributes:
+        config (Config): The configuration object containing the model settings.
+        devices (list): The list of devices used for computation.
+        mesh (Mesh): The mesh object representing the distributed computation mesh.
+        architecture (Architecture): The architecture object representing the neural network architecture.
+        state (TrainState): The train state object representing the current state of the model.
+
+    Methods:
+        __init__(self, config: Config) -> None: Initializes the Cortex object.
+        initialize_train_state(self) -> None: Initializes the train state of the model.
+        train(self, dataset) -> None: Trains the model using the given dataset.
+    """
+
     def __init__(self, config: Config) -> None:
         self.config = config
         self.devices = mesh_utils.create_device_mesh(
@@ -40,6 +60,14 @@ class Cortex:
         self.initialize_train_state()
 
     def initialize_train_state(self) -> None:
+        """Initializes the train state of the model.
+
+        This method initializes the train state of the model by setting up the architecture,
+        creating the optimizer, and initializing the model parameters.
+
+        Returns:
+            None
+        """
         with self.mesh:
             logging.info(f"Initializing architecture with {JAX_DEFAULT_BACKEND=}")
             rng = jax.random.PRNGKey(0)
@@ -48,7 +76,7 @@ class Cortex:
             dummy_data = jnp.ones((self.config.data.batch_size, self.config.arch.max_sequence_length), dtype=jnp.int32)
             dummy_image_data = jnp.ones((self.config.data.batch_size, 224, 224, 3))
             # Text
-            # batch = {"inputs": dummy_data, "mask": dummy_data, "targets": dummy_data}
+            batch = {"inputs": dummy_data, "mask": dummy_data, "targets": dummy_data}
             # vit images
             # batch = {
             #     "inputs": dummy_data,
@@ -66,7 +94,7 @@ class Cortex:
             #     "targets": dummy_data,
             # }
             # CLIP
-            batch = {"inputs": dummy_data, "images": dummy_image_data}
+            # batch = {"inputs": dummy_data, "images": dummy_image_data}
             state = self.architecture.init(rng, batch=batch, training=False)
             optimizer = make_optimizer(config=self.config, params=state["params"])
             self.state = TrainState.create(
@@ -87,6 +115,18 @@ class Cortex:
             print(tabulate_fn(batch, False))
 
     def train(self, dataset) -> None:
+        """Trains the model using the given dataset.
+
+        This method trains the model using the given dataset by iterating over the dataset
+        and performing training steps for each batch.
+
+        Args:
+            dataset: The dataset used for training.
+
+        Returns:
+            None
+        """
+
         @jax.jit
         def train_step(
             state: TrainState,

@@ -8,7 +8,8 @@ from flax.training.train_state import TrainState as FlaxTrainState
 
 @jax.jit
 def count_parameters(params: Any) -> int:
-    """Count the total number of parameters in a model's parameter dictionary using JAX."""
+    """Count the total number of parameters in a model's parameter dictionary
+    using JAX."""
     return sum(x.size for x in jax.tree_leaves(params))
 
 

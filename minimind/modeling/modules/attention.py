@@ -90,8 +90,8 @@ def self_attention(
 
 
 class MultiHeadAttention(nn.Module):
-    """
-    Implements multi-head attention mechanism as described in "Attention is All You Need" by Vaswani et al 2017.
+    """Implements multi-head attention mechanism as described in "Attention is
+    All You Need" by Vaswani et al 2017.
 
     This module splits the input into multiple heads, applies scaled dot-product attention independently on each head, and then concatenates the results. It allows the model to jointly attend to information from different representation subspaces at different positions.
 
@@ -124,7 +124,6 @@ class MultiHeadAttention(nn.Module):
         )
 
     def __call__(self, inputs: jnp.ndarray, context: jnp.ndarray, mask: jnp.ndarray = None) -> tuple:
-
         query = self.wq(inputs)
         key = self.wk(context)
         value = self.wv(context)
@@ -154,8 +153,8 @@ class MultiHeadAttention(nn.Module):
 
 
 class PositionWiseFFN(nn.Module):
-    """
-    Implements the position-wise feed-forward network of a transformer model.
+    """Implements the position-wise feed-forward network of a transformer
+    model.
 
     This module applies two linear transformations with a gelu activation in between, as per the original transformer model design. It is applied to each position separately and identically.
 
@@ -181,8 +180,7 @@ class PositionWiseFFN(nn.Module):
 
 
 class AddNorm(nn.Module):
-    """
-    Residual connection followed by layer normalization.
+    """Residual connection followed by layer normalization.
 
     Args:
         dropout (float): Dropout rate for the residual connection.

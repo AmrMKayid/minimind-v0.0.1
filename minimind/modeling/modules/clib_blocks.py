@@ -30,7 +30,6 @@ class CLIPTextEncoder(nn.Module):
         batch: Dict[str, jax.Array],
         training: bool = False,
     ) -> Dict[str, jax.Array]:
-
         batch = self.text_embedding(batch, training)
         for idx in range(self.config.arch.n_layers):
             batch = self.text_encoder_blocks[idx](batch, training)
@@ -55,7 +54,6 @@ class CLIPImageEncoder(nn.Module):
         batch: Dict[str, jax.Array],
         training: bool = False,
     ) -> Dict[str, jax.Array]:
-
         batch = self.image_embedding(batch, training)
         for idx in range(self.config.arch.n_layers):
             batch = self.image_encoder_blocks[idx](batch, training)

@@ -11,7 +11,8 @@ from minimind.modeling.modules.clib_blocks import CLIPImageEncoder, CLIPTextEnco
 
 @register_architecture
 class CLIP(nn.Module):
-    """CLIP (Contrastive Language-Image Pretraining) is designed to understand and connect vision and language."""
+    """CLIP (Contrastive Language-Image Pretraining) is designed to understand
+    and connect vision and language."""
 
     config: Config
 

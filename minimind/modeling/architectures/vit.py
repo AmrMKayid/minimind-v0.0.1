@@ -1,4 +1,4 @@
-"""vit model building blocks."""
+"""Vit model building blocks."""
 
 from typing import Dict
 
@@ -13,7 +13,8 @@ from minimind.modeling.modules.vit_block import ViTBlock
 
 @register_architecture
 class ViT(nn.Module):
-    """Implements the encoder component of the Vision Transformer (ViT) model"""
+    """Implements the encoder component of the Vision Transformer (ViT)
+    model."""
 
     config: Config
 
@@ -31,7 +32,6 @@ class ViT(nn.Module):
         batch: Dict[str, jax.Array],
         training: bool = False,
     ) -> Dict[str, jax.Array]:
-
         batch = self.embedding(batch, training)
         for idx in range(self.config.arch.n_layers):
             batch = self.vit_blocks[idx](batch, training)

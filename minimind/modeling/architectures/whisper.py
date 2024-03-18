@@ -1,4 +1,4 @@
-"""whisper model building blocks."""
+"""Whisper model building blocks."""
 from typing import Dict
 
 import flax.linen as nn
@@ -12,7 +12,8 @@ from minimind.modeling.modules.whisper_blocks import WhisperSpeechEncoder, Whisp
 
 @register_architecture
 class Whisper(nn.Module):
-    """Implements the Whisper model for speech-to-text tasks, such as speech recognition and transcription."""
+    """Implements the Whisper model for speech-to-text tasks, such as speech
+    recognition and transcription."""
 
     config: Config
 
@@ -21,7 +22,6 @@ class Whisper(nn.Module):
         self.decoder = WhisperTextDecoder(config=self.config)
 
     def __call__(self, batch: Dict[str, jax.Array], training: bool = False) -> jnp.ndarray:
-
         batch.get("audio", jnp.ones((8, 32, 8)))
         y = batch.get("text", jnp.ones((8, 32, 8)))
         batch = self.encoder(batch=batch, training=training)  # TODO:

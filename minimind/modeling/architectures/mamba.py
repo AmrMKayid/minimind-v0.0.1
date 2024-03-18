@@ -11,13 +11,18 @@ from minimind.modeling.modules.mamba_block import MambaBlock
 
 @register_architecture
 class Mamba(nn.Module):
-    """
-    MAMBA is an advanced ML model renowned for its exceptional linear-time processing efficiency,
-    which notably enhances its inference speed to outperform traditional Transformer models by up to five times in throughput.
-    Unlike conventional models that struggle with long sequence lengths, MAMBA demonstrates a linear scalability with sequence length,
-    maintaining or even improving its performance with sequences that extend up to a million elements.
-    This attribute makes MAMBA a highly versatile and efficient backbone for a variety of sequence modeling tasks across different domains,
-    including but not limited to language processing, audio analysis, and genomic studies.
+    """MAMBA is an advanced ML model renowned for its exceptional linear-time
+    processing efficiency, which notably enhances its inference speed to
+    outperform traditional Transformer models by up to five times in
+    throughput.
+
+    Unlike conventional models that struggle with long sequence lengths,
+    MAMBA demonstrates a linear scalability with sequence length,
+    maintaining or even improving its performance with sequences that
+    extend up to a million elements. This attribute makes MAMBA a highly
+    versatile and efficient backbone for a variety of sequence modeling
+    tasks across different domains, including but not limited to
+    language processing, audio analysis, and genomic studies.
     """
 
     config: Config
@@ -64,7 +69,6 @@ class Mamba(nn.Module):
         batch: Dict[str, jax.Array],
         training: bool = False,
     ) -> Dict[str, jax.Array]:
-
         inputs = batch.get("inputs")
         x = self.embedding(inputs)
         for block in self.mamba_blocks:
