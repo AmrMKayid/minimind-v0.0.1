@@ -10,12 +10,13 @@ from jax.experimental import mesh_utils
 from jax.sharding import Mesh
 from tqdm import tqdm
 
-from minimind.config import Config
+from minimind.config import Config, _mesh_cfg
 from minimind.metrics.cross_entropy import CrossEntropyLoss
 from minimind.modeling.architectures import get_architecture
 from minimind.modeling.architectures.state import TrainState
 from minimind.modeling.optimizers import make_optimizer
 from minimind.utils.constants import JAX_DEFAULT_BACKEND
+from jax.sharding import PartitionSpec as PS
 
 
 class Cortex:
@@ -95,6 +96,7 @@ class Cortex:
             # }
             # CLIP
             # batch = {"inputs": dummy_data, "images": dummy_image_data}
+            batch = jax.lax.with_sharding_constraint(batch, PS(_mesh_cfg.data_mesh, _mesh_cfg.sequence_axis))
             state = self.architecture.init(rng, batch=batch, training=False)
             optimizer = make_optimizer(config=self.config, params=state["params"])
             self.state = TrainState.create(
@@ -157,6 +159,7 @@ class Cortex:
             losses = []
             for step in pbar:
                 batch = next(ds_iter)
+                batch = jax.lax.with_sharding_constraint(batch, PS(_mesh_cfg.data_mesh, _mesh_cfg.sequence_axis))
                 if step == 0:
                     logging.info(f"{batch=}")
                 self.state, loss = train_step(self.state, batch=batch)

@@ -104,7 +104,7 @@ class Embedding(nn.Module):
             features=self.config.arch.embedding_dim,
             embedding_init=nn.with_partitioning(
                 jax.nn.initializers.normal(stddev=self.config.arch.initializer_range),
-                (self.config.mesh.fsdp_axis, self.config.mesh.tensor_axis),
+                ((self.config.mesh.fsdp_axis, self.config.mesh.sequence_axis), self.config.mesh.tensor_axis),
             ),
             param_dtype=self.param_dtype,
             dtype=self.dtype,
@@ -153,9 +153,9 @@ class Embedding(nn.Module):
         if attend:
             inputs = batch.pop("x")  # [batch, seq, emb_dim]
             logits = self.wte.attend(inputs)  # [batch, seq, vocab_size]
-            # logits = jax.lax.with_sharding_constraint(
-            #     logits, P(self.config.arch.data_mesh, None, self.config.arch.tensor_axis)
-            # )
+            logits = jax.lax.with_sharding_constraint(
+                logits, P(self.config.mesh.data_mesh, self.config.mesh.sequence_axis, self.config.mesh.tensor_axis)
+            )
             batch.update({"logits": logits})
         else:
             inputs = batch.get("inputs").astype("i4")  # [batch, seq]
@@ -172,7 +172,7 @@ class Embedding(nn.Module):
                     raise ValueError(f"Unknown positional embedding type: {self.positional_embedding_type}")
 
             embeddings = jax.lax.with_sharding_constraint(
-                embeddings, P(self.config.mesh.data_mesh, None, self.config.mesh.tensor_axis)
+                embeddings, P(self.config.mesh.data_mesh, self.config.mesh.sequence_axis, self.config.mesh.tensor_axis)
             )
             batch.update({"x": embeddings})
         return batch

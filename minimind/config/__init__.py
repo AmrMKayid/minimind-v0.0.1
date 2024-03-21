@@ -56,6 +56,7 @@ class ArchitectureConfig(BaseConfig):
     max_sequence_length: int = 32
     max_pos_emb_length: int = 512
     positional_embedding_type: str = "learned"
+    attention_fn: str = "self_attention"
     norm_type: str = "layer_norm"
     use_qk_norm: bool = False
     residual_dropout_rate: float = 0.0
@@ -88,7 +89,7 @@ class MeshConfig(BaseConfig):
     )
 
 
-class minimindConfig(BaseConfig):
+class MinimindConfig(BaseConfig):
     """Minimind configuration class."""
 
     PRNGKey: int = 0
@@ -115,7 +116,7 @@ class OptimConfig(BaseConfig):
 
 
 class Config(BaseConfig):
-    minimind: minimindConfig = Field(default_factory=minimindConfig)
+    minimind: MinimindConfig = Field(default_factory=MinimindConfig)
     mesh: MeshConfig = Field(default_factory=MeshConfig)
     data: DataConfig = Field(default_factory=DataConfig)
     arch: ArchitectureConfig = Field(default_factory=ArchitectureConfig)

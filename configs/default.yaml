@@ -13,11 +13,11 @@ mesh:
   n_tensors_parallel: 1
 
 data:
-  path: "c4"
-  name: "en"
+  path: "openwebtext"
+  name: "plain_text"
   split: "train"
   streaming: True
-  batch_size: 8
+  batch_size: 32
   always_start_with_bos: False
   tokenizer: "google/byt5-base"
   # tokenizer: "hf-internal-testing/llama-tokenizer"
@@ -33,6 +33,7 @@ arch:
   max_sequence_length: 1024
   max_pos_emb_length: 1024
   positional_embedding_type: "sinusoidal"
+  attention_fn: "self_attention"
   norm_type: "layer_norm"
   use_qk_norm: False
   residual_dropout_rate: 0.0

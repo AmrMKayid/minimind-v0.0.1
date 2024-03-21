@@ -5,7 +5,7 @@ import jax
 import jax.numpy as jnp
 
 from minimind.config import Config
-from minimind.modeling.modules.attention import AddNorm, MultiHeadAttention, PositionWiseFFN
+from minimind.modeling.modules.attentions.attention import AddNorm, MultiHeadAttention, PositionWiseFFN
 from minimind.modeling.modules.emb import Embedding, SpeechEmbedding
 from minimind.modeling.modules.transformer_block import TransformerBlock
 

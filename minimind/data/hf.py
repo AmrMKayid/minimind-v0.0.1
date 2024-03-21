@@ -45,8 +45,8 @@ class HuggingFaceDataset(Dataset):
                         "mask": np.array(attention_mask_buffer[1 : chunk_size + 1], dtype=np.float32).reshape(
                             self.config.data.batch_size, -1
                         ),
-                        "dataset_example_index": index,
-                        "dataset_total_tokens": total_tokens,
+                        # "dataset_example_index": np.array(index),
+                        # "dataset_total_tokens": np.array(total_tokens),
                     }
                     yield batch
                     token_buffer = token_buffer[chunk_size:]

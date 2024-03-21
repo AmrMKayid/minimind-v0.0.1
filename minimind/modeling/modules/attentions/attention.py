@@ -7,6 +7,7 @@ import jax.numpy as jnp
 from jax.sharding import PartitionSpec as P
 
 from minimind.config import _mesh_cfg
+from minimind.modeling.modules.attentions import register_attention_fn
 
 
 def create_mask_fn(batch: Dict, dtype=jnp.int8):
@@ -29,6 +30,7 @@ def create_mask_fn(batch: Dict, dtype=jnp.int8):
     return mask
 
 
+@register_attention_fn
 def self_attention(
     query: jax.Array,
     value: jax.Array,
@@ -48,31 +50,31 @@ def self_attention(
     scale = float(1 / math.sqrt(head_dim))
 
     key = jax.lax.with_sharding_constraint(
-        key, P(_mesh_cfg.data_mesh, None, _mesh_cfg.tensor_axis, None)
+        key, P(_mesh_cfg.data_mesh, _mesh_cfg.sequence_axis, _mesh_cfg.tensor_axis, None)
     )  # [batch, seq, n_heads, head_dim]
     value = jax.lax.with_sharding_constraint(
-        value, P(_mesh_cfg.data_mesh, None, _mesh_cfg.tensor_axis, None)
+        value, P(_mesh_cfg.data_mesh, _mesh_cfg.sequence_axis, _mesh_cfg.tensor_axis, None)
     )  # [batch, seq, num_heads, head_dim]
     query = jax.lax.with_sharding_constraint(
-        query, P(_mesh_cfg.data_mesh, None, _mesh_cfg.tensor_axis, None)
+        query, P(_mesh_cfg.data_mesh, _mesh_cfg.sequence_axis, _mesh_cfg.tensor_axis, None)
     )  # [batch, seq, num_heads, head_dim]
 
     attention_logits = jnp.einsum("bthd,bThd->bhtT", query, key)  # [batch, num_heads, seq, seq]
     attention_logits = (attention_logits * scale).astype(query.dtype)
     attention_logits = jax.lax.with_sharding_constraint(
-        attention_logits, P(_mesh_cfg.data_mesh, _mesh_cfg.tensor_axis, None, None)
+        attention_logits, P(_mesh_cfg.data_mesh, _mesh_cfg.tensor_axis, _mesh_cfg.sequence_axis, None)
     )
 
     if mask is not None:
         attention_logits = jnp.where(mask, attention_logits, jnp.finfo(attention_logits.dtype).min)
         attention_logits = jax.lax.with_sharding_constraint(
-            attention_logits, P(_mesh_cfg.data_mesh, _mesh_cfg.tensor_axis, None, None)
+            attention_logits, P(_mesh_cfg.data_mesh, _mesh_cfg.tensor_axis, _mesh_cfg.sequence_axis, None)
         )
 
     attention_weights = jax.nn.softmax(attention_logits, axis=-1)  # [batch, num_heads, seq, seq]
     attention_weights = attention_weights.astype(value.dtype)
     attention_weights = jax.lax.with_sharding_constraint(
-        attention_weights, P(_mesh_cfg.data_mesh, _mesh_cfg.tensor_axis, None, None)
+        attention_weights, P(_mesh_cfg.data_mesh, _mesh_cfg.tensor_axis, _mesh_cfg.sequence_axis, None)
     )
 
     attention_vec = jnp.einsum(
@@ -80,7 +82,7 @@ def self_attention(
     )  # [batch, seq, num_heads, emb_dim / num_heads]
 
     attention_vec = jax.lax.with_sharding_constraint(
-        attention_vec, P(_mesh_cfg.data_mesh, None, _mesh_cfg.tensor_axis, None)
+        attention_vec, P(_mesh_cfg.data_mesh, _mesh_cfg.sequence_axis, _mesh_cfg.tensor_axis, None)
     )
 
     return attention_vec
