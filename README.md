@@ -13,7 +13,8 @@ pip install poetry
 
 poetry env use $(which python)
 
-poetry install
+poetry install --with tpu
+# poetry install
 ```
 
 ## Entry point

@@ -37,27 +37,9 @@ def main() -> None:
     config = Config.read_config_from_yaml(args.config_path)
     logging.info(f"{config=}")
 
-    # # Using LaBSE since vocab size is 500k
-    # tokenizer = AutoTokenizer.from_pretrained(
-    #     "hf-internal-testing/llama-tokenizer",
-    #     bos_token="<|BOS_TEXT_TOKEN|>",
-    #     eos_token="<|EOS_TEXT_TOKEN|>",
-    #     pad_token="<|PAD_TOKEN|>",
-    #     unk_token="<|UNK_TOKEN|>",
-    #     additional_special_tokens=[
-    #         "<|BOS_VISION_TOKEN|>",
-    #         "<|EOS_VISION_TOKEN|>",
-    #     ],
-    #     extra_ids=0,
-    # )
-    # logging.info(f"{tokenizer=}")
-    # dataset = prepare_data(config, tokenizer)
-
     dataset = HuggingFaceDataset(config)
 
     cortex = Cortex(config)
-    # inspect(minimind)
-
     cortex.train(dataset)
 
 

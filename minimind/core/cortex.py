@@ -8,6 +8,7 @@ import jmp
 import numpy as np
 from jax.experimental import mesh_utils
 from jax.sharding import Mesh
+from jax.sharding import PartitionSpec as PS
 from tqdm import tqdm
 
 from minimind.config import Config, _mesh_cfg
@@ -16,7 +17,6 @@ from minimind.modeling.architectures import get_architecture
 from minimind.modeling.architectures.state import TrainState
 from minimind.modeling.optimizers import make_optimizer
 from minimind.utils.constants import JAX_DEFAULT_BACKEND
-from jax.sharding import PartitionSpec as PS
 
 
 class Cortex:
@@ -75,7 +75,7 @@ class Cortex:
 
             # TODO: take batch from dataset directly
             dummy_data = jnp.ones((self.config.data.batch_size, self.config.arch.max_sequence_length), dtype=jnp.int32)
-            dummy_image_data = jnp.ones((self.config.data.batch_size, 224, 224, 3))
+            jnp.ones((self.config.data.batch_size, 224, 224, 3))
             # Text
             batch = {"inputs": dummy_data, "mask": dummy_data, "targets": dummy_data}
             # vit images

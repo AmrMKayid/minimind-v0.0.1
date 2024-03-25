@@ -9,6 +9,7 @@ from minimind.config import Config
 from minimind.modeling.modules.attentions import get_attention_fn
 from minimind.modeling.modules.attentions.attention import create_mask_fn
 
+
 class TransformerBlock(nn.Module):
     """Transformer block."""
 

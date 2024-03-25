@@ -9,8 +9,8 @@ readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "3.10.11"
-jax = "0.4.25"
-jaxlib = "0.4.25"
+jax = "0.4.20"
+jaxlib = "0.4.20"
 optax = "0.2.1"
 ray = {version = "2.9.3", extras = ["default"]}
 tqdm = "4.66.1"
@@ -42,6 +42,18 @@ ipdb = "0.13.13"
 docformatter = "1.7.5"
 pylint = "3.1.0"
 
+
+[tool.poetry.group.tpu]
+optional = true
+
+[tool.poetry.group.tpu.dependencies]
+libtpu-nightly = { version="0.1.dev20231102", source="libtpu_releases" }
+
+
+[[tool.poetry.source]]
+name = "libtpu_releases"
+url = "https://storage.googleapis.com/jax-releases/libtpu_releases.html"
+priority = "supplemental"
 
 [build-system]
 build-backend = "poetry.core.masonry.api"

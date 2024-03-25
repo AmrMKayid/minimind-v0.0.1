@@ -1,4 +1,5 @@
 import flax.linen as nn
+import jax
 import jax.numpy as jnp
 from einops import einsum
 
@@ -61,7 +62,14 @@ class MambaBlock(nn.Module):
         return self.out_proj(y) + inputs
 
     def selective_scan(
-        self, u: jnp.ndarray, delta: jnp.ndarray, A: jnp.ndarray, B: jnp.ndarray, C: jnp.ndarray, D: jnp.ndarray
+        self,
+        u: jnp.ndarray,
+        delta: jnp.ndarray,
+        A: jnp.ndarray,
+        B: jnp.ndarray,
+        C: jnp.ndarray,
+        D: jnp.ndarray,
+        associative_scan: bool = False,
     ) -> jnp.ndarray:
         b, l, d_in = u.shape
         n = A.shape[1]
@@ -71,11 +79,21 @@ class MambaBlock(nn.Module):
         deltaB_u = einsum(delta, B, u, "b l d_in, b l n, b l d_in -> b l d_in n")
 
         x = jnp.zeros((b, d_in, n))
-        ys = []
 
-        for i in range(l):
-            x = deltaA[:, i] * x + deltaB_u[:, i]
-            y = einsum(x, C[:, i, :], "b d_in n, b n -> b d_in")
-            ys.append(y)
+        def _scan_fn(x, params):
+            d_A, d_Bu, C = params
 
-        return jnp.stack(ys, axis=1) + u * D
+            x = d_A * x + d_Bu
+            return x, einsum(x, C, "b d_in n, b n -> b d_in")
+
+        def _associative_scan_fn(s, c):
+            return tuple((c[0] * s[0], c[0] * s[1] + c[1]))
+
+        if associative_scan:
+            _, y = jax.lax.associative_scan(_associative_scan_fn, (deltaA, deltaB_u))
+            y = einsum(y, C, "b L d_in n, L n -> b L d_in")
+        else:
+            _, y = jax.lax.scan(_scan_fn, init=x, xs=[deltaA, deltaB_u, C])
+
+        y = y + u * D
+        return y

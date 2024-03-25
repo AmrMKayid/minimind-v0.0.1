@@ -32,4 +32,4 @@ RUN poetry env use /root/.pyenv/versions/3.10.11/bin/python3
 
 RUN git config --global --add safe.directory /minimind
 
-RUN --mount=type=ssh poetry install --with dev -vvv
+RUN --mount=type=ssh poetry install --with tpu -vvv
